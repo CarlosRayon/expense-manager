@@ -1,0 +1,6 @@
+@import 'tailwindcss';
+
+/* Tipografía Inter de Tailwind */
+body {
+  font-family: 'Inter', sans-serif;
+}
