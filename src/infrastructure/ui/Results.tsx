@@ -1,6 +1,6 @@
 'use client'
 
-import { BalanceReport } from '@/lib/ExpenseCalculator'
+import { BalanceReport } from '../../domain/models/Balance'
 
 interface ResultsProps {
   report: BalanceReport

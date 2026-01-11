@@ -1,38 +1,17 @@
-export interface CategoryBalance {
-  user1: number
-  user2: number
-  difference: number
-}
+import {
+  BalanceReport,
+  CategoryBalance,
+  FinalBalanceResult,
+} from '../models/Balance'
 
-export interface FinalBalanceResult {
-  isBalanced: boolean
-  message?: string
-  owes?: string
-  to?: string
-  amount?: number
-}
-
-export interface BalanceReport {
-  totalUser1: number
-  totalUser2: number
-  totalExpenses: number
-  averageShare: number
-  categoryBalances: Record<string, CategoryBalance>
-  finalBalanceResult: FinalBalanceResult
-}
-
-/**
- * Calculates balances based on user expense objects.
- * Domain Service for expense calculations.
- */
-export const ExpenseCalculator = {
+export class BalanceService {
   /**
    * Calculates the final balance between two users.
    * @param expensesUser1 - Object with parsed expenses for user 1 (e.g., {casa: 100}).
    * @param expensesUser2 - Object with parsed expenses for user 2.
    * @returns A full balance report.
    */
-  calculateFinalBalance(
+  public calculateFinalBalance(
     expensesUser1: Record<string, number>,
     expensesUser2: Record<string, number>
   ): BalanceReport {
@@ -97,5 +76,5 @@ export const ExpenseCalculator = {
       categoryBalances,
       finalBalanceResult,
     }
-  },
+  }
 }

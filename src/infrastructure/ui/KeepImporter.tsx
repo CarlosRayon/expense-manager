@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { KeepParser, ParsedData } from '@/lib/KeepParser'
+import { KeepNoteParser, ParsedData } from '../adapters/KeepNoteParser'
 
 interface KeepImporterProps {
   onImport: (data: ParsedData) => void
@@ -14,7 +14,8 @@ export default function KeepImporter({ onImport }: KeepImporterProps) {
   const handleImport = () => {
     if (!text.trim()) return
 
-    const parsedData = KeepParser.parse(text)
+    const parser = new KeepNoteParser()
+    const parsedData = parser.parse(text)
 
     onImport(parsedData)
     setText('')
