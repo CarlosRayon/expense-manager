@@ -2,13 +2,13 @@
  * Utility for parsing complex expense strings.
  * Converts strings like "1,58€ + 2,53€ + 100" into a single number.
  */
-export const ExpenseParser = {
+export class TextExpenseParser {
   /**
    * Parses an input string like "1,58€ + 2,53€ + 100" into a single number.
    * @param inputString - The raw string from the input field.
    * @returns The sum of all values in the string.
    */
-  parseInput(inputString: string): number {
+  public parseInput(inputString: string): number {
     if (!inputString || inputString.trim() === '') {
       return 0
     }
@@ -28,5 +28,5 @@ export const ExpenseParser = {
         const value = parseFloat(current)
         return sum + (isNaN(value) ? 0 : value) // Add valid numbers, ignore NaN
       }, 0)
-  },
+  }
 }

@@ -3,10 +3,10 @@ export interface ParsedData {
   ines: Record<string, string>
 }
 
-export const KeepParser = {
+export class KeepNoteParser {
   // Defines the mapping from common names (in Spanish, lowercase)
   // to the canonical IDs used in the form.
-  conceptMap: {
+  private conceptMap: Record<string, string> = {
     casa: 'casa',
     'casa (hipoteca, comunidad, seguros . . .)': 'casa',
     luz: 'luz',
@@ -25,7 +25,7 @@ export const KeepParser = {
     santillán: 'santillan', // Alias for 'santillan'
     otros: 'otros',
     'otros gastos': 'otros',
-  } as Record<string, string>,
+  }
 
   /**
    * Parses a block of text from Keep into a structured object.
@@ -33,7 +33,7 @@ export const KeepParser = {
    * @param {string} text - The raw text from the textarea.
    * @returns {Object} { carlos: {casa: "100", ...}, ines: {luz: "50", ...} }
    */
-  parse(text: string): ParsedData {
+  public parse(text: string): ParsedData {
     const lines = text.split('\n')
     const result: ParsedData = { carlos: {}, ines: {} }
     let currentConcept: string | null = null
@@ -81,5 +81,5 @@ export const KeepParser = {
       }
     }
     return result
-  },
+  }
 }

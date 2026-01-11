@@ -1,13 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import Header from '@/ui/Header'
-import KeepImporter from '@/ui/KeepImporter'
-import ExpenseForm, { CATEGORIES } from '@/ui/ExpenseForm'
-import Results from '@/ui/Results'
-import { ParsedData } from '@/lib/KeepParser'
-import { ExpenseParser } from '@/lib/ExpenseParser'
-import { ExpenseCalculator, BalanceReport } from '@/lib/ExpenseCalculator'
+import Header from '@/infrastructure/ui/Header'
+import KeepImporter from '@/infrastructure/ui/KeepImporter'
+import ExpenseForm, { CATEGORIES } from '@/infrastructure/ui/ExpenseForm'
+import Results from '@/infrastructure/ui/Results'
+import { ParsedData } from '@/infrastructure/adapters/KeepNoteParser'
+import { TextExpenseParser } from '@/infrastructure/adapters/TextExpenseParser'
+import { BalanceReport } from '@/domain/models/Balance'
+import { CalculateBalanceUseCase } from '@/application/usecases/CalculateBalanceUseCase'
 
 export default function HomePage() {
   const [importedData, setImportedData] = useState<ParsedData | undefined>(
@@ -27,20 +28,20 @@ export default function HomePage() {
     const expensesCarlos: Record<string, number> = {}
     const expensesInes: Record<string, number> = {}
 
+    const parser = new TextExpenseParser()
+
     for (const category of CATEGORIES) {
-      expensesCarlos[category.id] = ExpenseParser.parseInput(
+      expensesCarlos[category.id] = parser.parseInput(
         formData.carlos[category.id] || ''
       )
-      expensesInes[category.id] = ExpenseParser.parseInput(
+      expensesInes[category.id] = parser.parseInput(
         formData.ines[category.id] || ''
       )
     }
 
     // Calculate balance
-    const report = ExpenseCalculator.calculateFinalBalance(
-      expensesCarlos,
-      expensesInes
-    )
+    const useCase = new CalculateBalanceUseCase()
+    const report = useCase.execute(expensesCarlos, expensesInes)
 
     setBalanceReport(report)
 
